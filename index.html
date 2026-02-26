@@ -33,18 +33,19 @@
 }
 
 html.dark {
-  --bg-primary: #0F1523;
-  --bg-card: #1A2138;
-  --bg-header: linear-gradient(135deg, #0A1A3A 0%, #0E2A5C 50%, #133A7A 100%);
-  --text-primary: #E8EEF9;
-  --text-secondary: #8A9ABF;
-  --accent: #4DA3FF;
-  --accent-light: #1A2D4D;
-  --accent-bright: #64B5F6;
-  --border: #253354;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
-  --shadow-md: 0 4px 14px rgba(0,0,0,0.3);
-  --shadow-lg: 0 8px 28px rgba(0,0,0,0.4);
+  /* ensure dark mode uses the same light-theme variables */
+  --bg-primary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-header: linear-gradient(135deg, #0B3D91 0%, #1565C0 50%, #1E88E5 100%);
+  --text-primary: #1A2138;
+  --text-secondary: #6B7A99;
+  --accent: #0B3D91;
+  --accent-light: #E8EEF9;
+  --accent-bright: #2979FF;
+  --border: #E2E8F0;
+  --shadow-sm: 0 1px 3px rgba(11,61,145,0.06);
+  --shadow-md: 0 4px 14px rgba(11,61,145,0.1);
+  --shadow-lg: 0 8px 28px rgba(11,61,145,0.12);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1141,7 +1142,8 @@ body {
 }
 html.dark .bottom-nav {
   box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
-  background: #1A2138;
+  /* keep the same light background even in dark mode */
+  background: var(--bg-card);
 }
 .nav-item {
   flex: 1 1 0;
