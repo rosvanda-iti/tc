@@ -64,7 +64,10 @@ body {
 /* ========== HEADER ========== */
 .header {
   background: var(--bg-header);
+  /* height set by padding rather than fixed value */
   padding: 12px 16px 24px;
+  display: flex;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -90,6 +93,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   position: relative;
   z-index: 2;
 }
@@ -464,6 +468,11 @@ body {
   z-index: 3;
   text-align: center;
 }
+.bill-detail-status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
 .bill-detail-total-label {
   font-size: 12px;
   color: var(--text-secondary);
@@ -509,6 +518,47 @@ body {
   justify-content: space-between;
   padding: 12px 16px;
   border-bottom: 1px solid var(--border);
+}
+.bill-items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.bill-items-header .amount {
+  min-width: 98px;
+  text-align: right;
+}
+.invoice-collapse-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.invoice-collapse-btn:active {
+  transform: scale(0.96);
+}
+.invoice-collapse-btn i {
+  transition: transform 0.2s ease;
+}
+.invoice-card.is-collapsed #billInvoiceMeta {
+  display: none;
+}
+.invoice-card.is-collapsed .invoice-collapse-btn i {
+  transform: rotate(-90deg);
 }
 .invoice-card-title {
   font-family: 'Outfit', sans-serif;
@@ -617,6 +667,158 @@ body {
   transition: opacity 0.2s;
 }
 .bill-pay-btn:active { opacity: 0.85; }
+
+/* Invoice-style bill detail */
+.bill-invoice-wrap {
+  padding: 0;
+}
+.bill-invoice-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding: 12px 16px;
+}
+.bill-invoice-meta-item {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+}
+.bill-invoice-meta-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.bill-invoice-meta-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: left;
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  word-break: break-word;
+}
+@media (max-width: 420px) {
+  .bill-invoice-meta-item { grid-template-columns: 120px 1fr; }
+  .bill-invoice-exchange { flex-basis: 100%; }
+}
+
+.bill-invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.bill-invoice-table th,
+.bill-invoice-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.bill-invoice-table th {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  background: var(--bg-primary);
+}
+.bill-invoice-table td.num,
+.bill-invoice-table th.num {
+  text-align: right;
+  white-space: nowrap;
+  font-family: 'Outfit', sans-serif;
+}
+.bill-invoice-table td.center {
+  text-align: center;
+  white-space: nowrap;
+}
+.bill-invoice-table tr:last-child td {
+  border-bottom: none;
+}
+.bill-invoice-muted {
+  color: var(--text-secondary);
+}
+
+.bill-invoice-summary {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-primary);
+}
+.bill-invoice-summary-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding-bottom: 6px;
+}
+.bill-invoice-exchange {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 700;
+  color: var(--text-secondary);
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  line-height: 1.25;
+}
+.bill-invoice-summary-cols {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.bill-invoice-summary-cols span:first-child {
+  display: none;
+}
+.bill-invoice-summary-cols span {
+  min-width: 98px;
+  text-align: right;
+}
+.bill-invoice-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+}
+.bill-invoice-summary-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.bill-invoice-summary-amounts {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+.bill-invoice-summary-amounts span {
+  min-width: 98px;
+  text-align: right;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.bill-invoice-summary-row.total .bill-invoice-summary-label,
+.bill-invoice-summary-row.total .bill-invoice-summary-amounts span {
+  color: var(--accent);
+  font-weight: 800;
+}
+.bill-invoice-summary-row.due .bill-invoice-summary-label,
+.bill-invoice-summary-row.due .bill-invoice-summary-amounts span {
+  color: var(--danger);
+  font-weight: 900;
+}
 
 /* ========== PAYMENT HISTORY ========== */
 .payment-section {
@@ -1142,8 +1344,7 @@ body {
 }
 html.dark .bottom-nav {
   box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
-  /* keep the same light background even in dark mode */
-  background: var(--bg-card);
+  background: var(--bg-card); /* keep bottom nav light */
 }
 .nav-item {
   flex: 1 1 0;
@@ -1289,6 +1490,7 @@ html.dark .bottom-nav {
 /* Sub-page header */
 .sub-header {
   background: var(--bg-header);
+  /* use padding instead of fixed height for consistent sizing */
   padding: 14px 16px;
   display: flex;
   align-items: center;
@@ -1318,6 +1520,11 @@ html.dark .bottom-nav {
   font-size: 17px;
   font-weight: 600;
   color: #fff;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Banner */
@@ -1720,12 +1927,6 @@ html.dark .bottom-nav {
       <!-- Products injected by JS -->
     </div>
   </div>
-
-  <div class="detail-dots" id="productDots">
-    <span class="detail-dot active"></span>
-    <span class="detail-dot"></span>
-    <span class="detail-dot"></span>
-  </div>
 </div>
 
 <!-- ==================== PRODUCT PACKAGE PAGE ==================== -->
@@ -1750,12 +1951,6 @@ html.dark .bottom-nav {
     <div class="product-list-card" id="packageListCard">
       <!-- Packages injected by JS -->
     </div>
-  </div>
-
-  <div class="detail-dots" id="packageDots">
-    <span class="detail-dot active"></span>
-    <span class="detail-dot"></span>
-    <span class="detail-dot"></span>
   </div>
 </div>
 
@@ -1794,6 +1989,7 @@ html.dark .bottom-nav {
 
   <!-- Amount Card -->
   <div class="bill-detail-amount-card">
+    <span class="bill-status unpaid bill-detail-status" id="billDetailStatus">Unpaid</span>
     <div class="bill-detail-total-label">Total Amount Due</div>
     <div class="bill-detail-total" id="billDetailTotal"><span class="currency">$ </span>156.80</div>
     <div class="bill-detail-due" id="billDetailDue">Due Date: <strong>15/03/2026</strong></div>
@@ -1802,36 +1998,27 @@ html.dark .bottom-nav {
   <button class="bill-pay-btn" id="billPayBtn">Pay Now</button>
 
   <div class="invoice-section">
-    <div class="invoice-card">
+    <div class="invoice-card" id="billInvoiceCard">
       <div class="invoice-card-header">
-        <span class="invoice-card-title"><i class="fas fa-file-invoice"></i> Invoice Information</span>
+        <span class="invoice-card-title"><i class="fas fa-file-invoice"></i> Invoice Detail</span>
+        <button class="invoice-collapse-btn" id="billInvoiceToggle" type="button" aria-expanded="true" aria-controls="billInvoiceMeta" aria-label="Collapse customer info">
+          <i class="fas fa-chevron-down"></i>
+        </button>
       </div>
-      <div id="billDetailInfoRows">
-        <!-- Injected by JS -->
+      <div id="billInvoiceMetaHost" class="bill-invoice-wrap">
+        <!-- Injected by JS (customer info) -->
       </div>
     </div>
-  </div>
 
-  <!-- Charges Breakdown -->
-  <div class="invoice-section">
-    <div class="invoice-card">
+    <div class="invoice-card" id="billItemsCard" style="margin-top: 12px;">
       <div class="invoice-card-header">
-        <span class="invoice-card-title"><i class="fas fa-list-ul"></i> Charges Breakdown</span>
+        <div class="bill-items-header">
+          <span>DESCRIPTION</span>
+          <span class="amount">AMOUNT (USD)</span>
+        </div>
       </div>
-      <div id="billDetailCharges">
-        <!-- Injected by JS -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Payment Info -->
-  <div class="invoice-section">
-    <div class="invoice-card">
-      <div class="invoice-card-header">
-        <span class="invoice-card-title"><i class="fas fa-credit-card"></i> Payment Information</span>
-      </div>
-      <div id="billDetailPayment">
-        <!-- Injected by JS -->
+      <div id="billInvoiceItemsHost" class="bill-invoice-wrap">
+        <!-- Injected by JS (items + totals) -->
       </div>
     </div>
   </div>
@@ -2186,7 +2373,7 @@ function renderBillCardSummary() {
   var dueHtml = '';
   unpaid.forEach(function(inv) {
     var dueText = inv.dueDateShort || inv.dueDate;
-    dueHtml += '<div class="bill-meta-item"><i class="fas fa-calendar"></i> <span>' + inv.id + ' — Due Date</span> <strong>' + dueText + '</strong></div>';
+    dueHtml += '<div class="bill-meta-item"><i class="fas fa-receipt"></i> <span>' + inv.id + ' — Due Date</span> <strong>' + dueText + '</strong></div>';
   });
 
   if (unpaidCount === 0) {
@@ -2215,7 +2402,7 @@ function renderInvoiceList() {
     div.setAttribute('data-inv-idx', idx);
     var statusClass = inv.status === 'paid' ? 'paid' : 'unpaid';
     var statusLabel = inv.status === 'paid' ? 'Paid' : 'Unpaid';
-    var icon = inv.status === 'paid' ? 'fa-check-circle' : 'fa-clock';
+    var icon = inv.status === 'paid' ? 'fa-check-circle' : 'fa-receipt';
     var actionLabel = inv.status === 'paid' ? 'View Detail' : 'View Detail / Pay Now';
     var issueText = inv.issueDate ? inv.issueDate : '-';
     div.innerHTML =
@@ -2255,36 +2442,158 @@ function openBillDetail(idx) {
   var inv = invoices[idx];
   if (!inv) return;
 
+  /* Ensure customer info starts collapsed by default */
+  (function() {
+    var card = document.getElementById('billInvoiceCard');
+    var btn = document.getElementById('billInvoiceToggle');
+    if (card) card.classList.add('is-collapsed');
+    if (btn) {
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Expand customer info');
+    }
+  })();
+
   document.getElementById('billDetailTitle').textContent = inv.id;
+
+  var statusEl = document.getElementById('billDetailStatus');
+  if (statusEl) {
+    var statusClass = (inv.status === 'paid') ? 'paid' : (inv.status === 'overdue' ? 'overdue' : 'unpaid');
+    statusEl.className = 'bill-status ' + statusClass + ' bill-detail-status';
+    statusEl.textContent = (inv.status === 'paid') ? 'Paid' : (inv.status === 'overdue' ? 'Overdue' : 'Unpaid');
+  }
+
   document.getElementById('billDetailTotal').innerHTML = '<span class="currency">$ </span>' + inv.total.toFixed(2);
-  var dueColor = inv.status === 'unpaid' ? 'var(--danger)' : 'var(--success)';
+  var dueColor = inv.status === 'paid' ? 'var(--success)' : 'var(--danger)';
   document.getElementById('billDetailDue').innerHTML = 'Due Date: <strong style="color:' + dueColor + ';">' + inv.dueDate + '</strong>';
 
-  /* Info rows */
-  var infoHtml =
-    '<div class="invoice-row"><span class="invoice-row-label">Invoice No.</span><span class="invoice-row-value">' + inv.id + '</span></div>' +
-    '<div class="invoice-row"><span class="invoice-row-label">Billing Period</span><span class="invoice-row-value">' + inv.period + '</span></div>' +
-    '<div class="invoice-row"><span class="invoice-row-label">Account ID</span><span class="invoice-row-value">' + inv.accountId + '</span></div>' +
-    '<div class="invoice-row"><span class="invoice-row-label">Customer Name</span><span class="invoice-row-value">' + inv.customer + '</span></div>' +
-    '<div class="invoice-row"><span class="invoice-row-label">Status</span><span class="invoice-row-value" style="color:' + (inv.status === 'unpaid' ? '#FF5252' : '#00C48C') + ';">' + (inv.status === 'unpaid' ? 'Unpaid' : 'Paid') + '</span></div>';
-  document.getElementById('billDetailInfoRows').innerHTML = infoHtml;
+  /* Invoice-style detail (like provided sample) */
+  var EXCHANGE_RATE_KHR_PER_USD = 4083;
+  function roundMoney(n) {
+    return Math.round((Number(n || 0) + Number.EPSILON) * 100) / 100;
+  }
+  function fmtUsdNum(n) {
+    return roundMoney(n).toFixed(2);
+  }
+  function fmtUsdCode(n) {
+    return 'USD ' + roundMoney(n).toFixed(2);
+  }
+  function toKhr(usd) {
+    return Math.round(Number(usd || 0) * EXCHANGE_RATE_KHR_PER_USD);
+  }
+  function fmtKhrFromUsd(usd) {
+    return 'KHR ' + toKhr(usd).toLocaleString('en-US');
+  }
+  function safeText(v) {
+    var s = (v === undefined || v === null) ? '' : String(v);
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function deriveItemsFromCharges(charges) {
+    if (!Array.isArray(charges)) return [];
+    return charges
+      .filter(function(ch) { return ch && typeof ch.amount === 'number' && isFinite(ch.amount); })
+      .filter(function(ch) {
+        var nm = String(ch.name || '');
+        return !/(^|\b)(tax|vat|spt)(\b|\()/i.test(nm);
+      })
+      .map(function(ch) {
+        return {
+          description: ch.name,
+          quantity: 1,
+          unitPriceUsd: ch.amount,
+          amountUsd: ch.amount
+        };
+      });
+  }
 
-  /* Charges */
-  var chargesHtml = '';
-  inv.charges.forEach(function(ch) {
-    var amtStyle = ch.amount < 0 ? ' style="color:#00C48C;"' : '';
-    var amtStr = ch.amount < 0 ? '-$' + Math.abs(ch.amount).toFixed(2) : '$' + ch.amount.toFixed(2);
-    chargesHtml +=
-      '<div class="charge-item"><div class="charge-item-left"><span class="charge-dot ' + ch.color + '"></span><span class="charge-name">' + ch.name + '</span></div><span class="charge-amount"' + amtStyle + '>' + amtStr + '</span></div>';
+  var customerName = inv.customer || '-';
+  var period = inv.period || '-';
+  var address = inv.address || '-';
+  var telephone = inv.telephone || '-';
+  var vattin = inv.vattin || '-';
+  var issuedDate = inv.issueDate || '-';
+  var dueDate = inv.dueDate || '-';
+  var invoiceNo = inv.invoiceNo || inv.id || '-';
+  var accountNo = inv.accountNo || inv.accountId || '-';
+
+  var items = (Array.isArray(inv.items) && inv.items.length > 0) ? inv.items : deriveItemsFromCharges(inv.charges);
+  var subtotalUsd = roundMoney(items.reduce(function(sum, it) { return sum + Number(it.amountUsd || 0); }, 0));
+
+  var sptRate = (typeof inv.sptRate === 'number') ? inv.sptRate : 0.03;
+  var vatRate = (typeof inv.vatRate === 'number') ? inv.vatRate : 0.10;
+  var sptUsd = (typeof inv.sptUsd === 'number') ? roundMoney(inv.sptUsd) : roundMoney(subtotalUsd * sptRate);
+  var vatUsd = (typeof inv.vatUsd === 'number') ? roundMoney(inv.vatUsd) : roundMoney(subtotalUsd * vatRate);
+  var totalPeriodUsd = roundMoney(subtotalUsd + sptUsd + vatUsd);
+
+  var amountDueUsd = (typeof inv.amountDueUsd === 'number') ? roundMoney(inv.amountDueUsd) : roundMoney(inv.total);
+  var previousAmountDueUsd = (typeof inv.previousAmountDueUsd === 'number')
+    ? roundMoney(inv.previousAmountDueUsd)
+    : roundMoney(Math.max(amountDueUsd - totalPeriodUsd, 0));
+
+  var metaHtml =
+    '<div class="bill-invoice-meta" id="billInvoiceMeta">' +
+      '<div class="bill-invoice-meta-item"><span class="bill-invoice-meta-label">Customer Name:</span><span class="bill-invoice-meta-value">' + safeText(customerName) + '</span></div>' +
+      '<div class="bill-invoice-meta-item"><span class="bill-invoice-meta-label">Period:</span><span class="bill-invoice-meta-value">' + safeText(period) + '</span></div>' +
+      '<div class="bill-invoice-meta-item"><span class="bill-invoice-meta-label">Address:</span><span class="bill-invoice-meta-value">' + safeText(address) + '</span></div>' +
+      '<div class="bill-invoice-meta-item"><span class="bill-invoice-meta-label">Issued date:</span><span class="bill-invoice-meta-value">' + safeText(issuedDate) + '</span></div>' +
+      '<div class="bill-invoice-meta-item"><span class="bill-invoice-meta-label">Telephone:</span><span class="bill-invoice-meta-value">' + safeText(telephone) + '</span></div>' +
+      '<div class="bill-invoice-meta-item"><span class="bill-invoice-meta-label">Due date:</span><span class="bill-invoice-meta-value">' + safeText(dueDate) + '</span></div>' +
+      '<div class="bill-invoice-meta-item"><span class="bill-invoice-meta-label">VATTIN:</span><span class="bill-invoice-meta-value">' + safeText(vattin) + '</span></div>' +
+      '<div class="bill-invoice-meta-item"><span class="bill-invoice-meta-label">Invoice No.:</span><span class="bill-invoice-meta-value">' + safeText(invoiceNo) + '</span></div>' +
+      '<div class="bill-invoice-meta-item"><span class="bill-invoice-meta-label">Account No.:</span><span class="bill-invoice-meta-value">' + safeText(accountNo) + '</span></div>' +
+    '</div>';
+
+  var rows = '';
+  rows += '<tr class="bill-invoice-muted"><td>Previous Amount Due (Balance brought forward)</td><td class="num">' + fmtUsdNum(previousAmountDueUsd) + '</td></tr>';
+  items.forEach(function(it, i) {
+    var amt = Number(it.amountUsd || 0);
+    rows +=
+      '<tr>' +
+        '<td>' + (i + 1) + '. ' + safeText(it.description || '-') + '</td>' +
+        '<td class="num">' + fmtUsdNum(amt) + '</td>' +
+      '</tr>';
   });
-  chargesHtml += '<div class="charge-total"><span class="charge-total-label">Total</span><span class="charge-total-amount">$' + inv.total.toFixed(2) + '</span></div>';
-  document.getElementById('billDetailCharges').innerHTML = chargesHtml;
 
-  /* Payment info */
-  var payHtml =
-    '<div class="invoice-row"><span class="invoice-row-label">Last Payment</span><span class="invoice-row-value">' + inv.payment.lastPayment + '</span></div>' +
-    '<div class="invoice-row"><span class="invoice-row-label">Payment Method</span><span class="invoice-row-value">' + inv.payment.method + '</span></div>';
-  document.getElementById('billDetailPayment').innerHTML = payHtml;
+  var tableHtml =
+    '<table class="bill-invoice-table">' +
+      '<tbody>' + rows + '</tbody>' +
+    '</table>';
+
+  var summaryHtml =
+    '<div class="bill-invoice-summary">' +
+      '<div class="bill-invoice-summary-head">' +
+        '<span class="bill-invoice-exchange">Exchange Rate: 1 USD = KHR ' + EXCHANGE_RATE_KHR_PER_USD + '</span>' +
+      '</div>' +
+      '<div class="bill-invoice-summary-head">' +
+        '<span class="bill-invoice-summary-label"></span>' +
+        '<div class="bill-invoice-summary-amounts"><span>KHR</span><span>USD</span></div>' +
+      '</div>' +
+      '<div class="bill-invoice-summary-row">' +
+        '<span class="bill-invoice-summary-label">Subtotal</span>' +
+        '<div class="bill-invoice-summary-amounts"><span>' + fmtKhrFromUsd(subtotalUsd) + '</span><span>' + fmtUsdCode(subtotalUsd) + '</span></div>' +
+      '</div>' +
+      '<div class="bill-invoice-summary-row">' +
+        '<span class="bill-invoice-summary-label">SPT ' + Math.round(sptRate * 100) + '%</span>' +
+        '<div class="bill-invoice-summary-amounts"><span>' + fmtKhrFromUsd(sptUsd) + '</span><span>' + fmtUsdCode(sptUsd) + '</span></div>' +
+      '</div>' +
+      '<div class="bill-invoice-summary-row">' +
+        '<span class="bill-invoice-summary-label">VAT ' + Math.round(vatRate * 100) + '%</span>' +
+        '<div class="bill-invoice-summary-amounts"><span>' + fmtKhrFromUsd(vatUsd) + '</span><span>' + fmtUsdCode(vatUsd) + '</span></div>' +
+      '</div>' +
+      '<div class="bill-invoice-summary-row total">' +
+        '<span class="bill-invoice-summary-label">Total amount</span>' +
+        '<div class="bill-invoice-summary-amounts"><span>' + fmtKhrFromUsd(totalPeriodUsd) + '</span><span>' + fmtUsdCode(totalPeriodUsd) + '</span></div>' +
+      '</div>' +
+      '<div class="bill-invoice-summary-row due">' +
+        '<span class="bill-invoice-summary-label">Amount Due</span>' +
+        '<div class="bill-invoice-summary-amounts"><span>' + fmtKhrFromUsd(amountDueUsd) + '</span><span>' + fmtUsdCode(amountDueUsd) + '</span></div>' +
+      '</div>' +
+    '</div>';
+
+  var metaHost = document.getElementById('billInvoiceMetaHost');
+  if (metaHost) metaHost.innerHTML = metaHtml;
+
+  var itemsHost = document.getElementById('billInvoiceItemsHost');
+  if (itemsHost) itemsHost.innerHTML = tableHtml + summaryHtml;
 
   /* Pay button */
   var payBtn = document.getElementById('billPayBtn');
@@ -2297,6 +2606,19 @@ function openBillDetail(idx) {
 
   showPage('page-bill');
 }
+
+/* Invoice detail collapse toggle */
+(function() {
+  var btn = document.getElementById('billInvoiceToggle');
+  var card = document.getElementById('billInvoiceCard');
+  if (!btn || !card) return;
+
+  btn.addEventListener('click', function() {
+    var collapsed = card.classList.toggle('is-collapsed');
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    btn.setAttribute('aria-label', collapsed ? 'Expand customer info' : 'Collapse customer info');
+  });
+})();
 
 /* Back buttons */
 document.getElementById('productBackBtn').addEventListener('click', function() {
