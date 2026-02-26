@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 :root {
-  --bg-primary: #FFFFFF; /* changed from #F4F6FB to white */
+  --bg-primary: #FFFFFF;
   --bg-card: #FFFFFF;
   --bg-header: linear-gradient(135deg, #0B3D91 0%, #1565C0 50%, #1E88E5 100%);
   --text-primary: #1A2138;
@@ -28,24 +28,24 @@
   --danger: #FF5252;
   --nav-height: 68px;
   --qr-size: 54px;
-  --header-height: 88px; /* fallback; updated at runtime */
+  --app-bar-height: 64px;
+  --header-height: var(--app-bar-height); /* fallback; updated at runtime */
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html.dark {
-  /* ensure dark mode uses the same light-theme variables */
-  --bg-primary: #FFFFFF;
-  --bg-card: #FFFFFF;
-  --bg-header: linear-gradient(135deg, #0B3D91 0%, #1565C0 50%, #1E88E5 100%);
-  --text-primary: #1A2138;
-  --text-secondary: #6B7A99;
-  --accent: #0B3D91;
-  --accent-light: #E8EEF9;
-  --accent-bright: #2979FF;
-  --border: #E2E8F0;
-  --shadow-sm: 0 1px 3px rgba(11,61,145,0.06);
-  --shadow-md: 0 4px 14px rgba(11,61,145,0.1);
-  --shadow-lg: 0 8px 28px rgba(11,61,145,0.12);
+  --bg-primary: #0F1523;
+  --bg-card: #1A2138;
+  --bg-header: linear-gradient(135deg, #0A1A3A 0%, #0E2A5C 50%, #133A7A 100%);
+  --text-primary: #E8EEF9;
+  --text-secondary: #8A9ABF;
+  --accent: #4DA3FF;
+  --accent-light: #1A2D4D;
+  --accent-bright: #64B5F6;
+  --border: #253354;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 28px rgba(0,0,0,0.4);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -58,14 +58,18 @@ html, body {
 }
 
 body {
+  padding-bottom: 0;
+}
+
+body.has-bottom-nav {
   padding-bottom: calc(var(--nav-height) + 30px);
 }
 
 /* ========== HEADER ========== */
 .header {
   background: var(--bg-header);
-  /* height set by padding rather than fixed value */
-  padding: 12px 16px 24px;
+  height: var(--app-bar-height);
+  padding: 0 16px;
   display: flex;
   align-items: center;
   position: fixed;
@@ -1344,7 +1348,7 @@ body {
 }
 html.dark .bottom-nav {
   box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
-  background: var(--bg-card); /* keep bottom nav light */
+  background: #1A2138;
 }
 .nav-item {
   flex: 1 1 0;
@@ -1490,14 +1494,25 @@ html.dark .bottom-nav {
 /* Sub-page header */
 .sub-header {
   background: var(--bg-header);
-  /* use padding instead of fixed height for consistent sizing */
-  padding: 14px 16px;
+  height: var(--app-bar-height);
+  padding: 0 16px;
   display: flex;
   align-items: center;
   gap: 14px;
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 50;
+  left: 0;
+  right: 0;
+  z-index: 550;
+  box-shadow: 0 6px 24px rgba(2,6,23,0.06);
+}
+
+/* Ensure sub-pages content starts below fixed sub-header */
+#page-product,
+#page-package,
+#page-bill-list,
+#page-bill {
+  padding-top: var(--app-bar-height);
 }
 .back-btn {
   width: 36px;
@@ -1691,7 +1706,7 @@ html.dark .bottom-nav {
 }
 @media (min-width: 500px) {
   .content { max-width: 480px; margin-left: auto; margin-right: auto; }
-  .header { padding: 12px 16px 12px; }
+  .header { padding: 0 16px; }
   .bottom-nav { left: 0; right: 0; width: 100%; border-radius: 0; transform: none; max-width: none; }
 }
 </style>
@@ -2026,17 +2041,11 @@ html.dark .bottom-nav {
 </div>
 
 <script>
-/* ===== Dark mode detection ===== */
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.documentElement.classList.add('dark');
-}
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
-  if (event.matches) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-});
+/* ===== Keep light theme (white) ===== */
+document.documentElement.classList.remove('dark');
+
+/* Home is the initial active page and includes bottom nav */
+document.body.classList.add('has-bottom-nav');
 
 /* ===== Prevent scroll restore on reload (match dashboard_new.html) ===== */
 if ('scrollRestoration' in history) {
@@ -2137,6 +2146,7 @@ function showPage(pageId) {
   var page = document.getElementById(pageId);
   if (page) {
     page.classList.add('active');
+    document.body.classList.toggle('has-bottom-nav', pageId === 'page-home');
     window.scrollTo(0, 0);
     if (pageId === 'page-home') {
       setTimeout(syncHomeHeaderHeight, 0);
